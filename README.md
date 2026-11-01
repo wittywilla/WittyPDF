@@ -1,92 +1,63 @@
-<h1 align="center">WittyPDF</h1>
+# WittyPDF
 
-<p align="center">
-  <b>A PDF reader for papers, textbooks and scans.</b><br>
-  Selectable text, zoom and night pages, with the same highlights, notes and pen as the other Witty readers.
-</p>
+A PDF reader for papers, textbooks and scans. You need it to read PDFs in WittyMediaServer.
 
-<p align="center">
-  <a href="LICENSE"><img alt="Licence: Apache-2.0" src="https://img.shields.io/badge/licence-Apache--2.0-blue.svg"></a>
-  <img alt="React 18+" src="https://img.shields.io/badge/React-18%2B-61dafb.svg">
-  <img alt="pdf.js" src="https://img.shields.io/badge/renders%20with-pdf.js-e44d26.svg">
-</p>
+## What it does
 
-<p align="center">
-  <a href="#install">Install</a> ·
-  <a href="#use">Use</a> ·
-  <a href="wiki/Performance-and-security.md">Performance & security</a> ·
-  <a href="wiki/Home.md"><b>Full guide</b></a>
-</p>
+- **Continuous pages:** one or two across, fit width, fit page, or 50 to 400 percent.
+- **Night reading:** dark or sepia pages.
+- **Getting around:** the document's own contents, page thumbnails, and search across the whole document, with results arriving while a long file is searched.
+- **Exact resume:** the page and how far down it.
+- **Study tools from WittyInk:** highlights and notes, citations with page numbers, a pen with pressure, and reading aloud.
+- **Light on small machines:** pdf.js loads only when a PDF is opened, only nearby pages are drawn, and large files stream in parts.
+- **Safe with any PDF:** PDF scripts never run, and XFA forms are off.
 
-> WittyPDF is developed and released here. Issues and pull requests are welcome.
+pdf.js and its worker, which do the actual reading, stay with the app so they aren't carried twice. No documents come with it.
 
-Runs inside [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) and the
-[WittyReader](https://github.com/wittywilla/WittyReader) app. Pages are drawn with
-[pdf.js](https://mozilla.github.io/pdf.js/).
+How to use it is in **Help** inside WittyMediaServer: see the books guide.
 
-## Highlights
+## How to get it
 
-| | Viewing and getting around | |
-|---|---|---|
-| 📄 | **Continuous pages** | one or two across, fit width, fit page, or 50–400 % (Ctrl + scroll, + and −) |
-| 🌙 | **Dark pages** | light text on dark pages for night reading, or sepia |
-| 🗂️ | **Outline and thumbnails** | the document's own contents, nested, and page thumbnails |
-| 🔎 | **Search** | the whole document, with results arriving while long files are searched |
-| 🎯 | **Exact resume** | the page and how far down it, synced across devices in WittyMediaServer |
+An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPDF. That needs WittyMediaServer 0.6.0-alpha or later, and it works with nothing older. The range this version fits is in `module.json`: 0.6.0-alpha through 0.6.x.
 
-| | Study tools (from [WittyInk](https://github.com/wittywilla/WittyInk)) | |
-|---|---|---|
-| 🖍️ | **Highlights and notes** | boxes over the text, line by line, even across pages; colour meanings; Markdown export by page |
-| 📚 | **Citations with page numbers** | *“quote” (Author, Title (Year), p. 12)* |
-| ✍️ | **Pen with pressure** | pen, pencil, highlighter, eraser; strokes stay exactly where drawn at any zoom |
-| 🔊 | **Read aloud** | moving on through the pages |
+Adding it brings WittyInk, which it's built on.
 
-| | Light and safe | |
-|---|---|---|
-| 🪶 | **Low-end friendly** | pdf.js loads only when needed; only nearby pages are drawn; page images are released as they scroll away; large files stream in parts |
-| 🔒 | **Safe with any PDF** | PDF scripts never run, XFA forms are off, fonts are never compiled with `eval` |
-| 📺 | **Older devices** | uses pdf.js's build for older browsers, so TV web views work |
+## What it needs
 
-## Install
+- [WittyInk](https://github.com/wittywilla/WittyInk), and React 18 or newer, which the app provides.
+- [pdf.js](https://mozilla.github.io/pdf.js/), from `pdfjs-dist`, which draws the pages. It uses the build for older browsers, so TV web views can open it.
+
+## Platforms
+
+It's one browser bundle for every system the server runs on, and it runs on whichever device opens the server. It has been seen working in a desktop browser, against a test server on Linux. It also runs in the WittyReader app. Safari, real phones and real TVs have not been tried.
+
+## Building and testing
+
+You need Node.js 22, as CI uses, and Go for the manifest check. In a worktree, first run the copy of `dev-modules.mjs` kept above the repositories (`node D:/projects/dev-modules.mjs` on the development machine). It writes only links that git ignores, so the checkout builds against the repositories beside it.
 
 ```bash
-npm install github:wittywilla/WittyPDF
+npm install
 ```
 
-TypeScript and React source, for **Vite** with `@vitejs/plugin-react` (the pdf.js worker comes with
-Vite's `?url` import). Needs React 18 or newer.
-
-## Use
-
-Load it lazily, so pdf.js is only downloaded when a PDF is opened:
-
-```tsx
-import { lazy, Suspense } from 'react'
-import { HostContext } from '@wittywilla/wittyink'
-const WittyPDF = lazy(() => import('@wittywilla/wittypdf'))
-
-<HostContext.Provider value={host}>
-  <Suspense fallback={null}><WittyPDF /></Suspense>
-</HostContext.Provider>
+```bash
+npm run build:bundle
 ```
 
-The host's `pdf` field is what to open: `{ url }`, or `{ data }` for a file already in memory. See
-[Embedding](wiki/Embedding.md).
+That makes one script and one stylesheet, as a server installs them. To check the manifest:
 
-## The Witty family
+```bash
+go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
+```
 
-| Project | Role |
-|---|---|
-| [WittyInk](https://github.com/wittywilla/WittyInk) | what the readers share |
-| [WittyEbook](https://github.com/wittywilla/WittyEbook) · **WittyPDF** · [WittyComics](https://github.com/wittywilla/WittyComics) | the book, PDF and comic readers |
-| [WittyReader](https://github.com/wittywilla/WittyReader) · [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) | the apps they run in |
+It has no tests of its own yet. CI checks the manifest and builds the bundle.
+
+To use it in another app, give it a `ReaderHost` whose `pdf` field is what to open, and load it lazily so pdf.js only downloads when a PDF is opened: see [Embedding](wiki/Embedding.md). The other guides in [wiki/](wiki/Home.md) cover [viewing and zoom](wiki/Viewing-and-zoom.md), [getting around](wiki/Getting-around.md), [study tools](wiki/Study-tools-and-handwriting.md), and [performance and security](wiki/Performance-and-security.md).
 
 ## Licence
 
-**Apache-2.0**, the same licence as WittyMediaServer. © 2026 WittyWilla and contributors.
-Use, change and share it; if you redistribute it or build on it, keep the [NOTICE](NOTICE)
-attribution, *“WittyPDF, developed by WittyWilla”*, in your NOTICE file, documentation or About screen.
-The text-layer styles are adapted from pdf.js (Apache-2.0, Mozilla Foundation).
+Apache-2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, keep the NOTICE attribution.
+
+It uses pdf.js (`pdfjs-dist`), Copyright Mozilla Foundation, under Apache-2.0. The text-layer styles in `pdf.css` are adapted from pdf.js.
 
 ## Legal
 
