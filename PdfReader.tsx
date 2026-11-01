@@ -200,7 +200,7 @@ export default function PdfReader() {
       const start = host.start
       keep.current = { page: Math.min(d.numPages - 1, Math.floor(start)), frac: start % 1 }
       setDoc(d)
-    }).catch((e) => setErr(e?.message || 'This PDF cannot be opened'))
+    }).catch((e) => setErr(e?.name === 'PasswordException' ? 'This PDF is protected by a password, so it can’t be opened here. You can download it, and open it with its password in another program.' : 'This PDF can’t be opened. The file may be damaged.'))
     return () => { task.destroy() }
   }, [host.key]) // eslint-disable-line react-hooks/exhaustive-deps
 
