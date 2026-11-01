@@ -14,7 +14,7 @@ A PDF reader for papers, textbooks and scans. You need it to read PDFs in WittyM
 
 pdf.js and its worker, which do the actual reading, stay with the app so they aren't carried twice. No documents come with it.
 
-How to use it is in **Help** inside WittyMediaServer: see the books guide.
+How to use it is in **Help** inside WittyMediaServer: see Books, PDFs and comics.
 
 ## How to get it
 
