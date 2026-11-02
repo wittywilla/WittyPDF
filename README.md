@@ -2,6 +2,14 @@
 
 A PDF reader for papers, textbooks and scans. You need it to read PDFs in WittyMediaServer.
 
+<!-- pictures -->
+
+![A PDF open in the reader](docs/images/reader-pdf.webp)
+
+<sub>Earth as Art, NASA, public domain.</sub>
+
+<!-- /pictures -->
+
 ## What it does
 
 - **Continuous pages:** one or two across, fit width, fit page, or 50 to 400 percent.
