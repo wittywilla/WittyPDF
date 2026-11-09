@@ -63,7 +63,7 @@ To use it in another app, give it a `ReaderHost` whose `pdf` field is what to op
 
 ## Licence
 
-Apache-2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, keep the NOTICE attribution.
+GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution.
 
 It uses pdf.js (`pdfjs-dist`), Copyright Mozilla Foundation, under Apache-2.0. The text-layer styles in `pdf.css` are adapted from pdf.js.
 
@@ -95,5 +95,5 @@ To release:
 
 To take a version back, run the *withdraw* workflow from the *Actions* tab. It adds the version to a signed list on the release tagged `withdrawals`, which servers read.
 
-Licensed under Apache-2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Licensed under AGPL-3.0-or-later: see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 <!-- /module-kit -->
