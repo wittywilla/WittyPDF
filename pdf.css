@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+/* Copyright (C) 2026 WittyWilla and contributors */
 /* PDF reader: a scrolling column (or two) of pages, each a canvas with the
    highlight boxes, the selectable text and the ink stacked over it. */
 .pdf2 { background: radial-gradient(ellipse at 50% 30%, #3d3e44, #2b2c30 70%); color: #eee; }
