@@ -20,7 +20,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs'
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist/legacy/build/pdf.mjs'
 import workerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url'
-import { centerline, cite, colorName, Define, exportNotes, Field, fill, HighlightEditor, hits, IconBack, IconBookmark, IconContents, IconHandwriting, IconNext, IconNotes, IconPrev, IconSearch, IconSettings, IconSpeaker, IconStop, IconZoomIn, IconZoomOut, InkBar, InkDefs, InkStroke, loadInk, NotesPanel, outline, pointPressure, Range, saveInk, SelectionBar, Sheet, useAnnotations, useColorLabels, useHost, type Ann, type DrawTool, type InkPrefs, type Stroke } from '@wittywilla/wittyink'
+import { centerline, cite, colorName, Define, exportNotes, Field, fill, HighlightEditor, hits, IconBack, IconBookmark, IconContents, IconHandwriting, IconNext, IconNotes, IconPrev, IconSearch, IconSettings, IconSpeaker, IconStop, IconZoomIn, IconZoomOut, InkBar, InkDefs, InkStroke, loadInk, NotesPanel, outline, pointPressure, Range, saveInk, SelectionBar, laterSaver, settingBool, settingEnum, Sheet, useAnnotations, useColorLabels, useHost, type Ann, type ReaderHost, type DrawTool, type InkPrefs, type Stroke } from '@wittywilla/wittyink'
 import './pdf.css'
 
 // WittyPDF: the PDF reader, for papers, textbooks and scans: pages drawn by pdf.js
@@ -49,9 +49,19 @@ const MAX_PIXELS = 8e6 // per page canvas; keeps memory in check on phones and T
 const ZOOMS = [0.5, 0.67, 0.8, 1, 1.25, 1.5, 2, 3, 4]
 const FILTERS: Record<Prefs['theme'], string> = { normal: 'none', sepia: 'sepia(.35) brightness(.97)', dark: 'invert(.9) hue-rotate(180deg)' }
 
-function loadPrefs(): Prefs {
-  try { return { ...DEF, ...JSON.parse(localStorage.getItem(PREFS_KEY) || '{}') } } catch { return DEF }
+// The profile's settings for the reader (sdui.json), when the host keeps them, over what this
+// device remembers. A zoom other than fitting stays this device's own.
+function loadPrefs(host?: ReaderHost): Prefs {
+  let p = DEF
+  try { p = { ...DEF, ...JSON.parse(localStorage.getItem(PREFS_KEY) || '{}') } } catch { /* the defaults */ }
+  const v = host?.settings?.get('wittypdf')
+  if (!v) return p
+  return {
+    zoom: typeof p.zoom === 'number' ? p.zoom : settingEnum(v.zoom, ['width', 'page'] as const, p.zoom),
+    spread: settingBool(v.twoPages, p.spread), theme: settingEnum(v.pageColour, ['normal', 'sepia', 'dark'] as const, p.theme),
+  }
 }
+const toSettings = (p: Prefs) => ({ ...(typeof p.zoom === 'string' ? { zoom: p.zoom } : {}), twoPages: p.spread, pageColour: p.theme })
 
 // Joins the boxes of a selection that sit on the same line.
 function mergeBoxes(boxes: Box[]): Box[] {
@@ -174,7 +184,8 @@ export default function PdfReader() {
   const [doc, setDoc] = useState<PDFDocumentProxy | null>(null)
   const [err, setErr] = useState('')
   const [sizes, setSizes] = useState<Size[]>([])
-  const [p, setP] = useState(loadPrefs)
+  const [p, setP] = useState(() => loadPrefs(host))
+  const savePrefs = useMemo(() => laterSaver(host.settings ? (v) => host.settings!.save('wittypdf', v) : undefined), [host])
   const [width, setWidth] = useState(window.innerWidth)
   const [current, setCurrent] = useState(0)
   const [near, setNear] = useState<Set<number>>(new Set())
@@ -189,7 +200,7 @@ export default function PdfReader() {
   const [flash, setFlash] = useState<{ page: number; q: string } | null>(null)
   const [bar, setBar] = useState(true)
   const [speaking, setSpeaking] = useState(false)
-  const [ink, setInkState] = useState(loadInk)
+  const [ink, setInkState] = useState(() => loadInk(host))
   const [inkMode, setInkMode] = useState(false)
   useEffect(() => { if (inkMode) { setSel(null); setEdit(null); window.getSelection()?.removeAllRanges() } }, [inkMode])
   const A = useAnnotations()
@@ -205,8 +216,8 @@ export default function PdfReader() {
   const saved = useRef(-1)
   const lastDraw = useRef(0)
 
-  const setPrefs = (v: Partial<Prefs>) => setP((cur) => { const n = { ...cur, ...v }; try { localStorage.setItem(PREFS_KEY, JSON.stringify(n)) } catch { /* ignore */ } return n })
-  const setInk = (v: Partial<InkPrefs>) => setInkState((cur) => { const n = { ...cur, ...v }; saveInk(n); return n })
+  const setPrefs = (v: Partial<Prefs>) => setP((cur) => { const n = { ...cur, ...v }; try { localStorage.setItem(PREFS_KEY, JSON.stringify(n)) } catch { /* ignore */ } savePrefs(toSettings(n)); return n })
+  const setInk = (v: Partial<InkPrefs>) => setInkState((cur) => { const n = { ...cur, ...v }; saveInk(n, host); return n })
   const dark = p.theme === 'dark'
   const pokeBar = () => { setBar(true); clearTimeout(barTimer.current); barTimer.current = setTimeout(() => setBar(false), 3500) }
   useEffect(() => { pokeBar(); return () => clearTimeout(barTimer.current) }, []) // eslint-disable-line react-hooks/exhaustive-deps

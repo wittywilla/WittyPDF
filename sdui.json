@@ -2,6 +2,69 @@
   "format": "wittymodule-sdui",
   "formatVersion": 1,
   "module": "wittypdf",
-  "catalog": 2,
-  "theme": { "scope": "wittypdf", "label": "PDF reader" }
+  "catalog": 7,
+  "theme": {
+    "scope": "wittypdf",
+    "label": "PDF reader"
+  },
+  "settings": [
+    {
+      "id": "wittypdf",
+      "title": "PDFs",
+      "icon": "book",
+      "groups": [
+        {
+          "title": "View",
+          "footer": "Your choices in a PDF change these too. Outline, thumbnails, going to a page and search are in the reader.",
+          "rows": [
+            {
+              "key": "zoom",
+              "kind": "enum",
+              "scope": "profile",
+              "label": "Zoom",
+              "default": "width",
+              "options": [
+                {
+                  "value": "width",
+                  "label": "Fit width"
+                },
+                {
+                  "value": "page",
+                  "label": "Fit page"
+                }
+              ]
+            },
+            {
+              "key": "twoPages",
+              "kind": "bool",
+              "scope": "profile",
+              "label": "Two pages across",
+              "default": false
+            },
+            {
+              "key": "pageColour",
+              "kind": "enum",
+              "scope": "profile",
+              "label": "Page colour",
+              "default": "normal",
+              "options": [
+                {
+                  "value": "normal",
+                  "label": "White"
+                },
+                {
+                  "value": "sepia",
+                  "label": "Sepia"
+                },
+                {
+                  "value": "dark",
+                  "label": "Night"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

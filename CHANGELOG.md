@@ -5,6 +5,7 @@ What changed in WittyPDF, newest first. What changed before it had a repository 
 
 ## Unreleased
 
+- **Settings in every app's Settings, under Modules** (`sdui.json`, each profile's own): fit width or page, two pages across, and page colour. A PDF opens with them on every device, and changes made while reading are saved to them. The reading surface itself stays in the reader.
 - A PDF that can't be opened, or is password-protected, is now reported to the host's log (`host.report`), with no addresses' query strings in it.
 - **Module API 4**, for WittyMediaServer 0.8.0-alpha and later: the module carries its own server-driven UI in `sdui.json`, which `wittymodule pack` puts in every archive.
 - Carries `sdui.json` with its theme scope, so an administrator can give the PDF reader colours of its own. Its pages come with WittyInk, which every reader shares.
