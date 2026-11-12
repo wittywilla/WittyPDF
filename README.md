@@ -67,6 +67,15 @@ GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [N
 
 It uses pdf.js (`pdfjs-dist`), Copyright Mozilla Foundation, under Apache-2.0. The text-layer styles in `pdf.css` are adapted from pdf.js.
 
+
+## In every app: its server-driven UI
+
+It carries its own `sdui.json`: its theme scope, and **Settings, PDFs** (each profile's own): fit width or page, two pages across, and page colour. Its library and book pages come with WittyInk, which every reader shares.
+
+**Stays in the reader's own code:** the reading surface, zoom steps, outline and thumbnails, going to a page, search, and notes.
+
+The file is checked with `wittymodule check` and described in WittyMediaServer's [docs/SDUI-MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/SDUI-MODULES.md).
+
 ## Legal
 
 WittyPDF is an independent open-source project. It isn't associated with, sponsored by or endorsed
