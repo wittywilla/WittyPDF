@@ -5,6 +5,7 @@ What changed in WittyPDF, newest first. What changed before it had a repository 
 
 ## Unreleased
 
+- Carries `sdui.json` with its theme scope, so an administrator can give the PDF reader colours of its own. Its pages come with WittyInk, which every reader shares.
 - **WittyPDF 0.3.0:** Fits WittyMediaServer 0.8.x.
 
 - A PDF with a password says so in plain words, instead of showing the error from inside the PDF reader. It doesn't ask for the password: nothing here opens protected files.

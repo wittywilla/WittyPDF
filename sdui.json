@@ -1,0 +1,7 @@
+{
+  "format": "wittymodule-sdui",
+  "formatVersion": 1,
+  "module": "wittypdf",
+  "catalog": 2,
+  "theme": { "scope": "wittypdf", "label": "PDF reader" }
+}
