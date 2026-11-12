@@ -39,6 +39,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerUrl
 type Size = { w: number; h: number } // a page in PDF points
 type Box = [number, number, number, number, number] // page, x, y, w, h (fractions of the page)
 type Prefs = { zoom: 'width' | 'page' | number; spread: boolean; theme: 'normal' | 'sepia' | 'dark' }
+// An error's message for host.report: addresses lose their query strings
+// (they can carry a token), and it is kept short.
+const errText = (e: unknown) => String((e as Error)?.message || e || '').replace(/([a-z][a-z0-9+.-]*:\/\/[^\s?#"']*|\/[^\s?#"']*)[?#][^\s"']*/gi, '$1').slice(0, 500)
 const DEF: Prefs = { zoom: 'width', spread: false, theme: 'normal' }
 const PREFS_KEY = 'wms.pdfreader'
 const GAP = 16
@@ -218,7 +221,11 @@ export default function PdfReader() {
       const start = host.start
       keep.current = { page: Math.min(d.numPages - 1, Math.floor(start)), frac: start % 1 }
       setDoc(d)
-    }).catch((e) => setErr(e?.name === 'PasswordException' ? 'This PDF is protected by a password, so it can’t be opened here. You can download it, and open it with its password in another program.' : 'This PDF can’t be opened. The file may be damaged.'))
+    }).catch((e) => {
+      const locked = e?.name === 'PasswordException'
+      host.report?.('warn', locked ? 'a PDF is password-protected' : 'a PDF could not be opened', locked ? undefined : { stack: errText(e) })
+      setErr(locked ? 'This PDF is protected by a password, so it can’t be opened here. You can download it, and open it with its password in another program.' : 'This PDF can’t be opened. The file may be damaged.')
+    })
     return () => { task.destroy() }
   }, [host.key]) // eslint-disable-line react-hooks/exhaustive-deps
 
