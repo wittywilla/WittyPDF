@@ -5,6 +5,8 @@ What changed in WittyPDF, newest first. What changed before it had a repository 
 
 ## Unreleased
 
+- **WittyPDF 0.3.0:** Fits WittyMediaServer 0.8.x.
+
 - A PDF with a password says so in plain words, instead of showing the error from inside the PDF reader. It doesn't ask for the password: nothing here opens protected files.
 - Module API 3 and WittyMediaServer 0.6.0-alpha: this is how a server gets it now, with no copy compiled in.
 - Uses pdf.js 6.4.299. It has no eval option to turn off any more, and fetches its image decoders from the folder the host names (`pdf.wasmUrl`, `pdf.iccUrl`).

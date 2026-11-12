@@ -1,7 +1,7 @@
 {
   "id": "wittypdf",
   "name": "WittyPDF",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "repo": "wittywilla/WittyPDF",
   "license": "AGPL-3.0-or-later",
   "delivery": "web",
@@ -9,7 +9,7 @@
   "style": "style.css",
   "api": 3,
   "minServer": "0.6.0-alpha",
-  "maxServer": "0.6.x",
+  "maxServer": "0.8.x",
   "group": "read",
   "summary": "PDFs with selectable text, zoom, outline, thumbnails and search.",
   "updates": "The PDF reader itself: zoom, outline, thumbnails, search, study tools and its look.",
