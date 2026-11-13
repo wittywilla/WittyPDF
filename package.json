@@ -23,6 +23,6 @@
     "pdfjs-dist": "6.4.299"
   },
   "devDependencies": {
-    "vite": "^8.3.5"
+    "vite": "^8.3.6"
   }
 }
