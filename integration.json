@@ -1,0 +1,15 @@
+{
+  "format": "wittymodule-integration",
+  "formatVersion": 1,
+  "module": "wittypdf",
+  "host": {
+    "web": ">=5"
+  },
+  "web": {
+    "readers": [
+      {
+        "format": "pdf"
+      }
+    ]
+  }
+}

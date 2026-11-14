@@ -1,6 +1,6 @@
 {
   "name": "@wittywilla/wittypdf",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A PDF reader for papers and textbooks: selectable text, zoom, outline, thumbnails, search, highlights, notes and handwriting with pen pressure.",
   "license": "AGPL-3.0-or-later",
   "author": "WittyWilla (https://github.com/wittywilla)",
@@ -11,8 +11,8 @@
     "./*.css": "./*.css"
   },
   "scripts": {
-    "build:bundle": "node build-bundle.mjs",
-    "test": "node sdui/kit/write-sdui.mjs --check sdui.json"
+    "build:bundle": "node ${WITTYMODULE:-../WittyModule}/kit/web/build-bundle.mjs .",
+    "test": "node sdui/kit/write-sdui.mjs --check sdui.json && node --test scripts/test-web.mjs"
   },
   "repository": "github:wittywilla/WittyPDF",
   "peerDependencies": {

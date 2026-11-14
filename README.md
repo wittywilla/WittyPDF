@@ -51,13 +51,13 @@ npm install
 npm run build:bundle
 ```
 
-That makes one script and one stylesheet, as a server installs them. To check the manifest:
+That makes one script and one stylesheet, as a server installs them, with WittyModule's builder (`kit/web/build-bundle.mjs` in a WittyModule checkout beside this one, or wherever `WITTYMODULE` names). To check the manifest:
 
 ```bash
 go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
 ```
 
-It has no tests of its own yet. CI checks the manifest and builds the bundle.
+`npm test` checks `sdui.json`, and that `register` hands over a reader for exactly the formats `integration.json` claims. CI checks the manifest and builds the bundle.
 
 To use it in another app, give it a `ReaderHost` whose `pdf` field is what to open, and load it lazily so pdf.js only downloads when a PDF is opened: see [Embedding](wiki/Embedding.md). The other guides in [wiki/](wiki/Home.md) cover [viewing and zoom](wiki/Viewing-and-zoom.md), [getting around](wiki/Getting-around.md), [study tools](wiki/Study-tools-and-handwriting.md), and [performance and security](wiki/Performance-and-security.md).
 
@@ -67,6 +67,10 @@ GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [N
 
 It uses pdf.js (`pdfjs-dist`), Copyright Mozilla Foundation, under Apache-2.0. The text-layer styles in `pdf.css` are adapted from pdf.js.
 
+
+## How the app finds it
+
+Module API 5: `integration.json` claims the `pdf` format with the readers hook (`web.readers`), and the bundle's `register(host)` hands over the reader for it. The web app opens a book with whichever module in use claims its format, after loading WittyInk, which every reader is built on. The app has no list of readers of its own.
 
 ## In every app: its server-driven UI
 
