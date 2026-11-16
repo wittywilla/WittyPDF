@@ -2,6 +2,8 @@
 
 A PDF reader for papers, textbooks and scans. You need it to read PDFs in WittyMediaServer.
 
+It's a module of [WittyMediaServer](https://github.com/wittywilla/WittyMediaServer) ([wittymediaserver.com](https://wittymediaserver.com)), on module API 5, built on [WittyInk](https://github.com/wittywilla/WittyInk). The same reader also runs in the [WittyReader](https://github.com/wittywilla/WittyReader) app.
+
 <!-- pictures -->
 
 ![A PDF open in the reader](docs/images/reader-pdf.webp)
@@ -26,7 +28,7 @@ How to use it is in **Help** inside WittyMediaServer: see Books, PDFs and comics
 
 ## How to get it
 
-An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPDF. That needs WittyMediaServer 0.6.0-alpha or later, and it works with nothing older. The range this version fits is in `module.json`: 0.6.0-alpha through 0.6.x.
+An admin adds it from the module store inside WittyMediaServer: **Settings → Modules**, then **Browse the store**, then **Add** beside WittyPDF. The range this version fits is in `module.json`: WittyMediaServer 0.8.0-alpha through 0.8.x, module API 5. The server takes API 5 modules only, so older servers can't use this version. How modules work on the server is in its [docs/MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/MODULES.md).
 
 Adding it brings WittyInk, which it's built on.
 
@@ -41,7 +43,7 @@ It's one browser bundle for every system the server runs on, and it runs on whic
 
 ## Building and testing
 
-You need Node.js 22, as CI uses, and Go for the manifest check. In a worktree, first run the copy of `dev-modules.mjs` kept above the repositories (`node D:/projects/dev-modules.mjs` on the development machine). It writes only links that git ignores, so the checkout builds against the repositories beside it.
+You need Node.js 22, as CI uses, and Go for the manifest check. In a worktree, first run WittyMediaServer's `scripts/dev-modules.mjs` (or the copy its `--root` option keeps in the folder above the repositories). It writes only links that git ignores, so the checkout builds against the repositories beside it.
 
 ```bash
 npm install
@@ -61,13 +63,6 @@ go run github.com/wittywilla/wittymodule/cmd/wittymodule check .
 
 To use it in another app, give it a `ReaderHost` whose `pdf` field is what to open, and load it lazily so pdf.js only downloads when a PDF is opened: see [Embedding](wiki/Embedding.md). The other guides in [wiki/](wiki/Home.md) cover [viewing and zoom](wiki/Viewing-and-zoom.md), [getting around](wiki/Getting-around.md), [study tools](wiki/Study-tools-and-handwriting.md), and [performance and security](wiki/Performance-and-security.md).
 
-## Licence
-
-GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution.
-
-It uses pdf.js (`pdfjs-dist`), Copyright Mozilla Foundation, under Apache-2.0. The text-layer styles in `pdf.css` are adapted from pdf.js.
-
-
 ## How the app finds it
 
 Module API 5: `integration.json` claims the `pdf` format with the readers hook (`web.readers`), and the bundle's `register(host)` hands over the reader for it. The web app opens a book with whichever module in use claims its format, after loading WittyInk, which every reader is built on. The app has no list of readers of its own.
@@ -79,6 +74,14 @@ It carries its own `sdui.json`: its theme scope, and **Settings, PDFs** (each pr
 **Stays in the reader's own code:** the reading surface, zoom steps, outline and thumbnails, going to a page, search, and notes.
 
 The file is checked with `wittymodule check` and described in WittyMediaServer's [docs/SDUI-MODULES.md](https://github.com/wittywilla/WittyMediaServer/blob/master/docs/SDUI-MODULES.md).
+
+## Licence
+
+GNU Affero General Public License v3.0 (or later): see [LICENSE](LICENSE) and [NOTICE](NOTICE). If you redistribute it or build on it, please keep the NOTICE attribution.
+
+It uses pdf.js (`pdfjs-dist`), Copyright Mozilla Foundation, under Apache-2.0. The text-layer styles in `pdf.css` are adapted from pdf.js.
+
+WittyPDF is part of the WittyMediaServer project: [server repository](https://github.com/wittywilla/WittyMediaServer), [wittymediaserver.com](https://wittymediaserver.com).
 
 ## Legal
 

@@ -28,8 +28,10 @@ or bottom edge, to show them again.
 | **Ctrl+=**, **Ctrl+−**, **Ctrl+0** | Zoom in, zoom out, back to fit width. |
 | **⚙ → Zoom** | Fit width, Fit page, 100 %, 150 % or 200 %. |
 
-Zooming keeps you at the same place on the page. Your zoom is remembered on the device for every
-PDF.
+Zooming keeps you at the same place on the page. Fit width or fit page, pages across and page
+colour are used for every PDF: in WittyMediaServer they're your profile's own (also in
+**Settings**, under **Modules**), so they follow you to every device; in WittyReader they're
+remembered on the device. A set percentage zoom is always remembered on the device.
 
 ## One or two pages across
 
