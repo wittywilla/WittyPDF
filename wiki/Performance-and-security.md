@@ -27,7 +27,8 @@ every PDF as untrusted:
 
 - **No PDF scripts:** pdf.js's scripting support is not used, so nothing in a PDF can run code.
 - **No XFA forms:** that complex form format is turned off.
-- **No `eval`:** fonts are drawn without compiling code (`isEvalSupported: false`).
+- **No `eval`:** the pdf.js version it uses draws fonts without compiling code, and has no option
+  left to turn that on.
 - **Text is plain text:** search, the text layer and definitions only ever read the page's text;
   nothing from the PDF is inserted into the app as HTML.
 - **Built for older engines too:** WittyPDF uses pdf.js's build for older browsers, which also

@@ -10,6 +10,9 @@ pdf: { url: 'https://example.com/paper.pdf' }   // streamed in parts if the serv
 pdf: { data: new Uint8Array(bytes) }            // a file already in memory (it's handed to pdf.js's worker)
 ```
 
+pdf.js fetches some image decoders and colour profiles only when a page needs them. Add
+`wasmUrl` and `iccUrl` to the `pdf` field to say which folders it gets them from.
+
 Load WittyPDF lazily so pdf.js is only downloaded when needed:
 
 ```tsx
@@ -41,5 +44,5 @@ images, add `resolve.dedupe: ['pdfjs-dist']` so both share one copy.
 ## Requirements
 
 - React 18 or newer, and Vite.
-- `pdfjs-dist` 6.4.299 (installed with WittyPDF).
+- `pdfjs-dist`, at the version in `package.json` (installed with WittyPDF).
 - Any engine pdf.js's build for older browsers supports.
