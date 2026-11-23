@@ -36,3 +36,15 @@ test('register() hands over a reader for each format integration.json claims', a
     rmSync(outDir, { recursive: true, force: true })
   }
 })
+
+test('a PDF is opened without XFA and without pdf.js compiling code from its fonts', () => {
+  const src = readFileSync(join(root, 'PdfReader.tsx'), 'utf8')
+  const calls = [...src.matchAll(/pdfjs\.getDocument\(\{([^}]*)\}\)/g)].map((m) => m[1])
+  assert.ok(calls.length > 0, 'getDocument is called')
+  for (const opts of calls) {
+    // What the host passes comes first, so these always win.
+    assert.match(opts, /^\s*\.\.\.host\.pdf,/)
+    assert.match(opts, /enableXfa: false/)
+    assert.match(opts, /isEvalSupported: false/)
+  }
+})

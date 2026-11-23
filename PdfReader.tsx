@@ -225,7 +225,7 @@ export default function PdfReader() {
   // Open the document. Scripts in PDFs never run (pdf.js has no scripting
   // here) and fonts are not compiled with eval.
   useEffect(() => {
-    const task = pdfjs.getDocument({ ...host.pdf, enableXfa: false, disableAutoFetch: true, rangeChunkSize: 1 << 18 })
+    const task = pdfjs.getDocument({ ...host.pdf, enableXfa: false, isEvalSupported: false, disableAutoFetch: true, rangeChunkSize: 1 << 18 })
     task.promise.then(async (d) => {
       const first = (await d.getPage(1)).getViewport({ scale: 1 })
       setSizes(Array.from({ length: d.numPages }, () => ({ w: first.width, h: first.height })))

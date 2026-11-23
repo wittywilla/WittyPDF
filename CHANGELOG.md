@@ -3,6 +3,10 @@
 What changed in WittyPDF, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## Unreleased
+
+- PDFs open with pdf.js told not to compile code for their fonts.
+
 ## 0.4.2
 
 - The README's pictures are retaken from WittyMediaServer 0.8.0-alpha.
