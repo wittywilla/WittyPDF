@@ -9,6 +9,7 @@ What changed in WittyPDF, newest first. What changed before it had a repository 
 - **Long documents use less memory.** Pages you've scrolled past give back what the reader kept to draw them.
 - **On a television,** the display settings explain the remote's arrows and Back instead of Ctrl, + and − and Page Up.
 - **Fixed:** closing the page list while its small pictures were still on their way could leave errors behind in the browser.
+- **Safer documents:** PDFs open without the reader compiling code for their fonts.
 
 ## Developer notes for 0.4.3
 
