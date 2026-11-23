@@ -87,16 +87,22 @@ type PageProps = {
 const Page = memo(function Page({ doc, index, size, scale, draw, theme, boxes, strokes, dark, bookmarked, flash, onSize }: PageProps) {
   const canvas = useRef<HTMLCanvasElement | null>(null)
   const text = useRef<HTMLDivElement | null>(null)
+  const drawn = useRef(false)
   useEffect(() => {
     if (!draw) {
       // Off screen: give the memory back.
       if (canvas.current) { canvas.current.width = 0; canvas.current.height = 0 }
       if (text.current) text.current.replaceChildren()
+      // And pdf.js's own copy of the page (its drawing list and fonts), kept for every page
+      // seen until the document closes otherwise. It is made again if the page comes back. Only a
+      // page that was drawn: asking for the others would fetch every page of a long document.
+      if (drawn.current) { drawn.current = false; doc.getPage(index + 1).then((pg) => pg.cleanup()).catch(() => {}) }
       return
     }
     let task: RenderTask | null = null
     let layer: pdfjs.TextLayer | null = null
     let gone = false
+    drawn.current = true
     doc.getPage(index + 1).then(async (page: PDFPageProxy) => {
       if (gone) return
       const base = page.getViewport({ scale: 1 })
@@ -154,18 +160,20 @@ function Thumb({ doc, index, current, go }: { doc: PDFDocumentProxy; index: numb
     const el = c.current
     if (!el) return
     let task: RenderTask | null = null
+    let gone = false
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting || task) return
       io.disconnect()
       doc.getPage(index + 1).then((p) => {
+        if (gone) return // the list closed while the page was on its way
         const vp = p.getViewport({ scale: 140 / p.getViewport({ scale: 1 }).width })
         el.width = vp.width; el.height = vp.height
         task = p.render({ canvas: el, canvasContext: el.getContext('2d')!, viewport: vp })
         task.promise.catch(() => {})
-      })
+      }).catch(() => {}) // the document closed first
     })
     io.observe(el)
-    return () => { io.disconnect(); task?.cancel() }
+    return () => { gone = true; io.disconnect(); task?.cancel() }
   }, [doc, index])
   return (
     <button className={'pdf-thumb' + (current ? ' on' : '')} onClick={go} aria-label={`Page ${index + 1}`} aria-current={current ? 'page' : undefined}>
@@ -560,7 +568,8 @@ export default function PdfReader() {
     if (mod && e.key === '-') { e.preventDefault(); zoomBy(-1); return }
     if (mod && e.key === '0') { e.preventDefault(); setZoom('width'); return }
     if (mod) return
-    if (e.key === 'Escape' || e.key === 'GoBack') {
+    if (['Escape', 'GoBack', 'BrowserBack', 'Back', 'XF86Back'].includes(e.key)) {
+      e.preventDefault() // the browser's own Back would leave a page more
       if (panel || sel || edit || define) { setPanel(null); setSel(null); setEdit(null); setDefine(null) } else if (inkMode) setInkMode(false); else close()
       return
     }
@@ -687,7 +696,7 @@ export default function PdfReader() {
                 <div className="seg">{([['normal', 'As printed'], ['sepia', 'Sepia'], ['dark', 'Dark']] as const).map(([v, l]) => <button key={v} className={p.theme === v ? 'active' : ''} onClick={() => setPrefs({ theme: v })}>{l}</button>)}</div>
                 <p className="muted small">Dark shows light text on dark pages; pictures change colour too.</p>
               </Field>
-              <p className="muted small">Ctrl + scroll, or + and −, zoom. Arrow keys and Page Up / Down turn pages.</p>
+              <p className="muted small">{document.documentElement.classList.contains('tv-mode') ? 'The arrows turn pages. Back closes the document.' : 'Ctrl + scroll, or + and −, zoom. Arrow keys and Page Up / Down turn pages.'}</p>
             </div>
           )}
         </Sheet>

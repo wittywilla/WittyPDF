@@ -3,6 +3,19 @@
 What changed in WittyPDF, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.4.3
+
+- **Back on any TV remote closes the document** (or the open panel first). Some remotes' Back button did nothing in the reader. Back no longer also leaves the page before it, as it could with some remotes.
+- **Long documents use less memory.** Pages you've scrolled past give back what the reader kept to draw them.
+- **On a television,** the display settings explain the remote's arrows and Back instead of Ctrl, + and − and Page Up.
+- **Fixed:** closing the page list while its small pictures were still on their way could leave errors behind in the browser.
+
+## Developer notes for 0.4.3
+
+- Back keys (`preventDefault`, so the browser does not go back as well): `Escape`, `GoBack`, `BrowserBack`, `Back` and `XF86Back`.
+- A page that was drawn and goes off screen calls `PDFPageProxy.cleanup()` (only those: asking for undrawn pages would fetch them).
+- `Thumb` ignores a page that arrives after it unmounted and catches a `getPage` rejected by a destroyed document.
+
 ## 0.4.2
 
 - The README's pictures are retaken from WittyMediaServer 0.8.0-alpha.
