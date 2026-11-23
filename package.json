@@ -1,6 +1,6 @@
 {
   "name": "@wittywilla/wittypdf",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A PDF reader for papers and textbooks: selectable text, zoom, outline, thumbnails, search, highlights, notes and handwriting with pen pressure.",
   "license": "AGPL-3.0-or-later",
   "author": "WittyWilla (https://github.com/wittywilla)",
@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@wittywilla/wittyink": "github:wittywilla/WittyInk#v0.4.1",
-    "pdfjs-dist": "6.4.299"
+    "pdfjs-dist": "6.5.438"
   },
   "devDependencies": {
-    "vite": "^8.3.5"
+    "vite": "^8.3.8"
   }
 }
