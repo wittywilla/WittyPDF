@@ -3,6 +3,10 @@
 What changed in WittyPDF, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.4.4
+
+- **Updated dependencies:** actions/setup-go from 7.0.0 to 7.1.0; vite from 8.3.5 to 8.3.8; pdfjs-dist from 6.4.299 to 6.5.438.
+
 ## 0.4.3
 
 - **Back on any TV remote closes the document** (or the open panel first). Some remotes' Back button did nothing in the reader. Back no longer also leaves the page before it, as it could with some remotes.
