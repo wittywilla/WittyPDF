@@ -3,6 +3,10 @@
 What changed in WittyPDF, newest first. What changed before it had a repository of its own is in the
 [WittyMediaServer changelog](https://github.com/wittywilla/WittyMediaServer/blob/master/CHANGELOG.md).
 
+## 0.4.5
+
+- **Fixed:** apps that check WittyPDF's types (WittyReader) build again with pdf.js 6.5.438. The reader no longer passes pdf.js an option it dropped; fonts still never run as code.
+
 ## 0.4.4
 
 - **Updated dependencies:** actions/setup-go from 7.0.0 to 7.1.0; vite from 8.3.5 to 8.3.8; pdfjs-dist from 6.4.299 to 6.5.438.
