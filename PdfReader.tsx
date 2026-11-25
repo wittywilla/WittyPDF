@@ -231,9 +231,9 @@ export default function PdfReader() {
   useEffect(() => { pokeBar(); return () => clearTimeout(barTimer.current) }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Open the document. Scripts in PDFs never run (pdf.js has no scripting
-  // here) and fonts are not compiled with eval.
+  // here) and fonts are not compiled with eval (pdf.js 6.5 removed that path entirely).
   useEffect(() => {
-    const task = pdfjs.getDocument({ ...host.pdf, enableXfa: false, isEvalSupported: false, disableAutoFetch: true, rangeChunkSize: 1 << 18 })
+    const task = pdfjs.getDocument({ ...host.pdf, enableXfa: false, disableAutoFetch: true, rangeChunkSize: 1 << 18 })
     task.promise.then(async (d) => {
       const first = (await d.getPage(1)).getViewport({ scale: 1 })
       setSizes(Array.from({ length: d.numPages }, () => ({ w: first.width, h: first.height })))

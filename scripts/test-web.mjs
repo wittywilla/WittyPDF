@@ -45,6 +45,11 @@ test('a PDF is opened without XFA and without pdf.js compiling code from its fon
     // What the host passes comes first, so these always win.
     assert.match(opts, /^\s*\.\.\.host\.pdf,/)
     assert.match(opts, /enableXfa: false/)
-    assert.match(opts, /isEvalSupported: false/)
+  }
+  // pdf.js 6.5 dropped isEvalSupported along with the code that compiled fonts with eval;
+  // make sure the pdf.js the reader ships has no way to build code from a document.
+  for (const f of ['pdf.min.mjs', 'pdf.worker.min.mjs']) {
+    const lib = readFileSync(join(root, 'node_modules/pdfjs-dist/legacy/build', f), 'utf8')
+    assert.doesNotMatch(lib, /\bnew Function\s*\(|[^.\w$]eval\s*\(/, `${f} can compile code`)
   }
 })
